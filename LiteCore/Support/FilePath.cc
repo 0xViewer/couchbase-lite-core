@@ -339,7 +339,12 @@ namespace litecore {
 
         free(wcanon);
 #else
-        char *canon = ::realpath(path().c_str(), nullptr);
+        // Android API 15 and below don't support realpath() with second parameter passing null
+        // https://android.googlesource.com/platform/bionic/+/ics-mr1-release/libc/bionic/realpath.c
+        char *resolved = (char *)malloc(PATH_MAX);
+        char *canon = ::realpath(path().c_str(), resolved);
+        if (!canon)
+            free(resolved);
 #endif
 
         if (!canon) {
