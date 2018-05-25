@@ -41,3 +41,6 @@ project.lock.json
 packages/
 /C/Documentation
 *.pyc
+
+.idea
+*.iml
